@@ -26,15 +26,25 @@ func (t *templateHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		t.tmpl = template.Must(template.ParseFiles(filepath.Join("templates", t.filename)))
 	})
 
-	t.tmpl.Execute(w, nil)
+	t.tmpl.Execute(w, r)
 }
 
 func main() {
 	addr := flag.String("addr", ":4000", "Http server port")
 	flag.Parse()
 
-	http.Handle("/", &templateHandler{filename: "chat.html"})
+	// create the websocket room
+	r := newRoom()
 
+	http.Handle("/chat", &templateHandler{filename: "chat.html"})
+
+	http.Handle("/room", r)
+
+	// start the room
+	go r.run()
+
+	// start the web server
+	log.Println("Starting the web server on", *addr)
 	err := http.ListenAndServe(*addr, nil)
 	if err != nil {
 		log.Fatal("ListenAndServe: ", err)
