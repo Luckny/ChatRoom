@@ -4,9 +4,12 @@ import (
 	"flag"
 	"log"
 	"net/http"
+	"os"
 	"path/filepath"
 	"sync"
 	"text/template"
+
+	"github.com/Luckny/go-tracer"
 )
 
 // https://pkg.go.dev/sync#Once
@@ -35,6 +38,7 @@ func main() {
 
 	// create the websocket room
 	r := newRoom()
+	r.tracer = tracer.New(os.Stdout)
 
 	http.Handle("/chat", &templateHandler{filename: "chat.html"})
 
