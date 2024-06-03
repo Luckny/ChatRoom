@@ -1,6 +1,6 @@
 import { Container, Grid, Paper, Typography } from "@mui/material";
-import FriendList from "./FriendList";
 import MessageBox from "./MessageBox";
+import RoomList from "./RoomList";
 
 
 export default function Chat() {
@@ -13,7 +13,7 @@ export default function Chat() {
         </Grid>
       </Grid>
       <Grid container component={Paper} sx={{ width: '100%', height: '100%' }}>
-        <FriendList />
+        <RoomList />
         <MessageBox />
       </Grid>
     </Container>

@@ -1,7 +1,9 @@
 import { createContext, ReactNode, useEffect, useState } from "react";
 
 export type SocketType = {
+  messages: string[];
   sendMessage: (message: string) => void;
+
 }
 
 interface ISocketProvider {
@@ -11,8 +13,7 @@ export const SocketContext = createContext<SocketType | undefined>(undefined)
 
 export const SocketProvider = ({ children }: ISocketProvider) => {
   const [webSocket, setWebsocket] = useState<WebSocket | null>(null)
-
-
+  const [messages, setMessages] = useState<string[]>([])
   useEffect(() => {
     const ws = new WebSocket("ws://localhost:8080/room")
 
@@ -24,12 +25,13 @@ export const SocketProvider = ({ children }: ISocketProvider) => {
       console.log("Web Socked connection closed.")
     }
 
-    ws.onmessage = (message: MessageEvent) => {
-      console.log(message.data)
-    }
     setWebsocket(ws)
   }, [])
 
+  if (webSocket)
+    webSocket.onmessage = (message: MessageEvent) => {
+      setMessages([...messages, message.data])
+    }
 
   /**
    * Send a message over the websocket connection.
@@ -42,7 +44,7 @@ export const SocketProvider = ({ children }: ISocketProvider) => {
   }
 
   return (
-    <SocketContext.Provider value={{ sendMessage }}>
+    <SocketContext.Provider value={{ messages, sendMessage }}>
       {children}
     </SocketContext.Provider>
   )

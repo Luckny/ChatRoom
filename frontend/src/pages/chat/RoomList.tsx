@@ -1,6 +1,6 @@
 import { Avatar, Divider, Grid, List, ListItem, ListItemIcon, ListItemText, TextField } from "@mui/material";
 
-export default function FriendList() {
+export default function RoomList() {
   return (
     <Grid item xs={3} sx={{ borderRight: '1px solid #e0e0e0' }}>
       <List>
