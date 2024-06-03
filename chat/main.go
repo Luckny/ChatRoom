@@ -40,9 +40,10 @@ func main() {
 	r := newRoom()
 	r.tracer = tracer.New(os.Stdout)
 
+	// TODO: remove
 	http.Handle("/chat", &templateHandler{filename: "chat.html"})
 
-	http.Handle("/room", r)
+	http.Handle("/room", MustAuth(r))
 
 	// start the room
 	go r.run()
