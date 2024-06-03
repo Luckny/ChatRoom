@@ -1,17 +1,22 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import './index.css';
-import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { SocketProvider } from './context/websocket/SocketContext';
+import { BrowserRouter } from 'react-router-dom';
+import { AppRoutes } from './AppRoutes';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
 root.render(
-  <SocketProvider>
-    <App />
-  </SocketProvider>
+  <BrowserRouter>
+    <SocketProvider>
+      {/* TODO: implement layout */}
+      {/* <Layout> */}
+      <AppRoutes />
+      {/* </Layout> */}
+    </SocketProvider>
+  </BrowserRouter>
 );
 
 // If you want to start measuring performance in your app, pass a function
