@@ -1,4 +1,5 @@
-import { createContext, ReactNode, useEffect, useState } from "react";
+import { createContext, useEffect, useState } from "react";
+import { ChildrenType } from "../../typing";
 
 export type SocketType = {
   messages: string[];
@@ -6,12 +7,9 @@ export type SocketType = {
 
 }
 
-interface ISocketProvider {
-  children: ReactNode
-}
 export const SocketContext = createContext<SocketType | undefined>(undefined)
 
-export const SocketProvider = ({ children }: ISocketProvider) => {
+export const SocketProvider = ({ children }: ChildrenType) => {
   const [webSocket, setWebsocket] = useState<WebSocket | null>(null)
   const [messages, setMessages] = useState<string[]>([])
   useEffect(() => {
