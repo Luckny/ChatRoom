@@ -1,10 +1,12 @@
 package main
 
 import (
+	"log"
 	"net/http"
 	"os"
 
 	"github.com/Luckny/go-tracer"
+	"github.com/joho/godotenv"
 )
 
 type authHandler struct {
@@ -28,4 +30,17 @@ func (h *authHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 func MustAuth(handler http.Handler) http.Handler {
 	return &authHandler{next: handler}
+}
+
+func NewAuth() {
+	err := godotenv.Load()
+	if err != nil {
+		log.Fatal("Error loading env file.", "-", err)
+	}
+
+	googleClientId := os.Getenv("GOOGLE_CLIENT_ID")
+	googleClientSecret := os.Getenv("GOOGLE_CLIENT_SECRET")
+
+	log.Println(googleClientId, googleClientSecret)
+
 }

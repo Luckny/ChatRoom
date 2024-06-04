@@ -35,6 +35,7 @@ func (t *templateHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 func main() {
 	addr := flag.String("addr", ":4000", "Http server port")
 	flag.Parse()
+	NewAuth()
 
 	// create the websocket room
 	r := newRoom()
