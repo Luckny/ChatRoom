@@ -18,7 +18,7 @@ export default function Login() {
               <a href="/auth/login/github">Github</a>
             </li>
             <li>
-              <a href="/auth/login/google">Google</a>
+              <a href="http://localhost:8080/auth/login/google">Google</a>
             </li>
           </ul>
         </div>
