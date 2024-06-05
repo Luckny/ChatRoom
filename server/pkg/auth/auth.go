@@ -7,6 +7,7 @@ import (
 	"net/http"
 	"os"
 
+	"github.com/Luckny/LinkUp/pkg/tracer"
 	"github.com/go-chi/chi"
 	"github.com/gorilla/sessions"
 	"github.com/joho/godotenv"
@@ -22,11 +23,10 @@ type authHandler struct {
 
 // ServeHTTP handles HTTP requests for authentication.
 func (h *authHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+	tracer.Trace("Must auth middleware")
 	// TODO: implement
-
 	h.next.ServeHTTP(w, r)
 }
-
 func MustAuth(handler http.Handler) http.Handler {
 	return &authHandler{next: handler}
 }
@@ -76,9 +76,11 @@ func LoginHandler(w http.ResponseWriter, r *http.Request) {
 	switch action {
 	case "login":
 		if user, err := gothic.CompleteUserAuth(w, r); err == nil {
+			tracer.Trace("Completed user auth from login")
 			log.Println(user)
 			http.Redirect(w, r, "http://localhost:3000", http.StatusFound)
 		} else {
+			tracer.Trace("Starting Auth process")
 			gothic.BeginAuthHandler(w, r)
 		}
 	case "callback":
@@ -88,6 +90,7 @@ func LoginHandler(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 		log.Println(user)
+		tracer.Trace("Completed user auth from callback")
 		http.Redirect(w, r, "http://localhost:3000", http.StatusFound)
 
 	default:

@@ -4,7 +4,7 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/Luckny/go-tracer"
+	"github.com/Luckny/LinkUp/pkg/tracer"
 	"github.com/gorilla/websocket"
 )
 
@@ -20,9 +20,6 @@ type room struct {
 
 	// Holds all active clients in this room
 	clients map[*client]bool
-
-	// Will trace this room's activity. Default's to off
-	tracer tracer.Tracer
 }
 
 func newRoom() *room {
@@ -31,7 +28,6 @@ func newRoom() *room {
 		join:     make(chan *client),
 		leave:    make(chan *client),
 		clients:  make(map[*client]bool),
-		tracer:   tracer.Off(),
 	}
 }
 
@@ -41,14 +37,14 @@ func (r *room) run() {
 		case client := <-r.join:
 			// client joining the room
 			r.clients[client] = true
-			r.tracer.Trace("New client joined.")
+			tracer.Trace("New client joined.")
 
 		case client := <-r.leave:
 			// client leaving the room
 			delete(r.clients, client)
 			// close the client's sending channel
 			close(client.send)
-			r.tracer.Trace("Client left.")
+			tracer.Trace("Client left.")
 
 		// message in the msg in the queue
 		case msg := <-r.msgQueue:
@@ -57,12 +53,12 @@ func (r *room) run() {
 				select {
 				case client.send <- msg:
 					// send the message
-					r.tracer.Trace(" -- Message sent to client")
+					tracer.Trace(" -- Message sent to client")
 				default:
 					// failed to send
 					delete(r.clients, client)
 					close(client.send)
-					r.tracer.Trace(" -- Failed to send message, closing client")
+					tracer.Trace(" -- Failed to send message, closing client")
 				}
 			}
 		}

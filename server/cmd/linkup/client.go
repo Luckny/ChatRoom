@@ -37,7 +37,6 @@ func (c *client) read() {
 func (c *client) write() {
 	for msg := range c.send {
 		err := c.socket.WriteMessage(websocket.TextMessage, msg)
-
 		if err != nil {
 			// TODO: handle write message error
 			break

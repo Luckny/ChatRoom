@@ -4,10 +4,8 @@ import (
 	"flag"
 	"log"
 	"net/http"
-	"os"
 
 	"github.com/Luckny/LinkUp/pkg/auth"
-	"github.com/Luckny/go-tracer"
 	"github.com/go-chi/chi"
 )
 
@@ -19,8 +17,6 @@ func main() {
 
 	// link up room
 	room := newRoom()
-	// my tracer
-	room.tracer = tracer.New(os.Stdout)
 	// our chi router
 	router := chi.NewRouter()
 
