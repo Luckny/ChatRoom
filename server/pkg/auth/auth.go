@@ -38,6 +38,7 @@ func (authService *AuthService) StoreUserSession(
 	r *http.Request,
 	user goth.User,
 ) error {
+	tracer.Trace("Storing user session")
 	session, _ := gothic.Store.Get(r, UserSessionName)
 	// Set some session values.
 	session.Values["user"] = user

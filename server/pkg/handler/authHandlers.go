@@ -20,7 +20,7 @@ func (h *Handler) HandleLogin(w http.ResponseWriter, r *http.Request) {
 		tracer.Trace("User already authenticated ", user.Email)
 		http.Redirect(w, r, "http://localhost:3000", http.StatusFound)
 	} else {
-		tracer.Trace("Starting Auth process")
+		tracer.Trace("User not authenticated, starting auth process.")
 		gothic.BeginAuthHandler(w, r)
 	}
 }
