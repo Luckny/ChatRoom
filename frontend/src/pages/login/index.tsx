@@ -13,12 +13,12 @@ export default function Login() {
         <div>
           <p>Select the service you would like to sign in with</p>
           <ul>
-            <li><a href="/auth/login/facebook">Facebook</a></li>
+            <li><a href="/auth/facebook">Facebook</a></li>
             <li>
-              <a href="/auth/login/github">Github</a>
+              <a href="/auth/github">Github</a>
             </li>
             <li>
-              <a href="http://localhost:8080/auth/login/google">Google</a>
+              <a href="http://localhost:8080/auth/google">Google</a>
             </li>
           </ul>
         </div>
