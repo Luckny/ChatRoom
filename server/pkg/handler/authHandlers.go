@@ -39,4 +39,5 @@ func (h *Handler) HandleAuthCallback(w http.ResponseWriter, r *http.Request) {
 	}
 	tracer.Trace(user.Email)
 	tracer.Trace("Completed user auth from callback")
+	http.Redirect(w, r, "http://localhost:3000", http.StatusFound)
 }
