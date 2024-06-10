@@ -18,7 +18,7 @@ func (h *Handler) HandleLogin(w http.ResponseWriter, r *http.Request) {
 
 	if user, err := gothic.CompleteUserAuth(w, r); err == nil {
 		tracer.Trace("User already authenticated ", user.Email)
-		http.Redirect(w, r, "http://localhost:3000", http.StatusFound)
+		http.Redirect(w, r, "http://localhost:5173", http.StatusFound)
 	} else {
 		tracer.Trace("User not authenticated, starting auth process.")
 		gothic.BeginAuthHandler(w, r)
@@ -39,5 +39,5 @@ func (h *Handler) HandleAuthCallback(w http.ResponseWriter, r *http.Request) {
 	}
 	tracer.Trace(user.Email)
 	tracer.Trace("Completed user auth from callback")
-	http.Redirect(w, r, "http://localhost:3000", http.StatusFound)
+	http.Redirect(w, r, "http://localhost:5173", http.StatusFound)
 }
