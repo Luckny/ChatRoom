@@ -34,6 +34,7 @@ func main() {
 	// auth routes
 	router.Get("/auth/{provider}", handler.HandleLogin)
 	router.Get("/auth/{provider}/callback", handler.HandleAuthCallback)
+	router.Get("/user", handler.GetUser)
 
 	log.Println("Server listening on port", *addr)
 	err := http.ListenAndServe(*addr, router)
