@@ -1,13 +1,19 @@
+import { useNavigate } from 'react-router-dom';
+import { useEffect } from 'react';
+import { useAuth } from '../hooks/auth';
 import { ChildrenType } from '../typing';
-// import { useLocation, Navigate } from 'react-router-dom';
 
 export default function ProtectedRoute({ children }: ChildrenType) {
-  // TODO: implement  const [isLoggedIn] =
-  // const { pathname } = useLocation();
+  const { isLoading, isAuthenticated } = useAuth();
+  const navigate = useNavigate();
 
-  // if (!isLoggedIn && pathname) {
-  //   return <Navigate to={`/login?from=${pathname}`} />;
-  // }
+  console.log('about to check auth state in protected route');
+
+  useEffect(() => {
+    if (!isLoading && !isAuthenticated) {
+      navigate('/login');
+    }
+  }, [navigate, isAuthenticated, isLoading]);
 
   return children;
 }

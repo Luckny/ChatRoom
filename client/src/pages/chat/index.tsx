@@ -1,6 +1,7 @@
 import { Container, Grid, Paper, Typography } from '@mui/material';
 import MessageBox from './MessageBox';
 import RoomList from './RoomList';
+import { useAuth, useAuthRedirect } from '../../hooks/auth';
 
 export default function Chat() {
   return (
