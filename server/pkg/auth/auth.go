@@ -15,6 +15,10 @@ import (
 type AuthService struct {
 }
 
+type User struct {
+	Email string
+}
+
 func NewAuthService(store sessions.Store) *AuthService {
 
 	gothic.Store = store
@@ -80,7 +84,7 @@ func MustAuth(next http.Handler, auth *AuthService) http.HandlerFunc {
 			return
 		}
 
-		tracer.Trace("User is authenticated. user: ", session.Name)
+		tracer.Trace("User is authenticated. user: ", session.Email)
 		next.ServeHTTP(w, r)
 	}
 
