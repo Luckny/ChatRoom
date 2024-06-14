@@ -39,8 +39,8 @@ func initConfig() Config {
 
 		CookieSecret:     getEnv("COOKIE_SECRET", "A3256DCEEF11B26457FB1E8779552"),
 		CookieAge:        getEnvAsInt("COOKIE_AGE", oneDayInSeconds),
-		CoockieIsSecure:  getEnvAsBool("COOCKIE_IS_SECURE", false),
-		CookieIsHttpOnly: getEnvAsBool("COOKIE_IS_HTTP_ONLY", false),
+		CoockieIsSecure:  getEnvAsBool("COOCKIE_IS_SECURE", true),
+		CookieIsHttpOnly: getEnvAsBool("COOKIE_IS_HTTP_ONLY", true),
 	}
 }
 
