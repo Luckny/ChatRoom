@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import axios, { AxiosResponse } from 'axios';
 import {
   createContext,
@@ -25,18 +24,15 @@ export const AuthContext = createContext<AuthType>(initialAuth);
 
 export function AuthProvider({ children }: any) {
   const [isLoading, setLoading] = useState(true);
-  console.log('isLoading: ', isLoading);
   // TODO: refactor
   const [authState, setState] = useState({
     user: '',
     isAuthenticated: false,
     error: undefined,
   });
-  console.log('Auth State: ', authState);
 
   const getUser = useCallback(async () => {
     setLoading(true);
-    console.log('Getting user');
     // TODO: handle type
     let response: AxiosResponse<any, any>;
     try {
@@ -44,22 +40,21 @@ export function AuthProvider({ children }: any) {
         withCredentials: true,
       });
       console.log('The get user response: ', response);
-
       setState(() => ({
         user: 'luckny',
         isAuthenticated: true,
         error: undefined,
       }));
       setLoading(false);
-      console.log('Auth State updated: ', authState);
     } catch (e) {
-      console.log('There was an error getting the user: ', e);
+      setLoading(false);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
+    console.log('my current auth state: ', authState);
     getUser();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [getUser]);
 
   const value = useMemo(() => {
