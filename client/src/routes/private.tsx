@@ -1,3 +1,4 @@
+import { SocketProvider } from '../context/websocket/SocketContext';
 import Chat from '../pages/chat';
 import { Route } from './typing';
 
@@ -5,7 +6,11 @@ import { Route } from './typing';
 const privateRoutes: Route[] = [
   {
     path: '/chat',
-    element: <Chat />,
+    element: (
+      <SocketProvider>
+        <Chat />
+      </SocketProvider>
+    ),
   },
 ];
 
