@@ -80,6 +80,7 @@ func MustAuth(next http.Handler, auth *AuthService) http.HandlerFunc {
 		session, err := auth.GetUserSession(r)
 		if err != nil {
 			tracer.Trace("User is not authenticated. (redirecting to login)")
+			// TODO: redirect to front end login
 			http.Redirect(w, r, "/login", http.StatusTemporaryRedirect)
 			return
 		}

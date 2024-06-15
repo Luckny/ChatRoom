@@ -31,10 +31,14 @@ func main() {
 
 	// web socket route
 	router.Handle("/linkup", auth.MustAuth(room, authService))
+
 	// auth routes
 	router.Get("/auth/{provider}", handler.HandleLogin)
 	router.Get("/auth/{provider}/callback", handler.HandleAuthCallback)
 	router.Get("/user", handler.GetUser)
+
+	// start the room
+	go room.run()
 
 	log.Println("Server listening on port", *addr)
 	err := http.ListenAndServe(*addr, router)
