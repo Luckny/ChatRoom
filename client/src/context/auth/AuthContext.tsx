@@ -4,65 +4,102 @@ import {
   useCallback,
   useEffect,
   useMemo,
+  useReducer,
   useState,
 } from 'react';
 
+// TODO: move to type file
 type AuthType = {
-  user: string; // TODO: create user type
-  isLoading: Boolean;
-  isAuthenticated: Boolean;
+  email: string; // TODO: create user type
+  isAuthenticated: boolean;
   error?: string;
 };
 
+// unauthenticated user state
 const initialAuth: AuthType = {
-  user: '',
-  isLoading: true,
+  email: '',
   isAuthenticated: false,
+  error: undefined,
 };
 
-export const AuthContext = createContext<AuthType>(initialAuth);
+export const AuthContext = createContext<AuthType & { isLoading: boolean }>({
+  ...initialAuth,
+  isLoading: true,
+});
 
-export function AuthProvider({ children }: any) {
-  const [isLoading, setLoading] = useState(true);
-  // TODO: refactor
-  const [authState, setState] = useState({
-    user: '',
-    isAuthenticated: false,
-    error: undefined,
-  });
+// available dispatch actions
+const actions = {
+  LOGIN: 'lOGIN',
+};
 
-  const getUser = useCallback(async () => {
-    setLoading(true);
-    // TODO: handle type
-    let response: AxiosResponse<any, any>;
-    try {
-      response = await axios.get('http://localhost:8080/user', {
-        withCredentials: true,
-      });
-      console.log('The get user response: ', response);
-      setState(() => ({
-        user: 'luckny',
+const authReducer = (
+  state: AuthType,
+  action: any /* TODO: type is a string with a payload */
+): AuthType => {
+  switch (action.type) {
+    case actions.LOGIN:
+      return {
+        email: action.payload.email,
         isAuthenticated: true,
         error: undefined,
-      }));
-      setLoading(false);
-    } catch (e) {
-      setLoading(false);
+      };
+    default:
+      return state;
+  }
+};
+
+export function AuthProvider({ children }: any /* TODO: type  */) {
+  const [authState, dispatch] = useReducer(authReducer, initialAuth);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+
+  const initiateAuthState = async () => {
+    const email = localStorage.getItem('email');
+
+    if (email) {
+      // no need to hit the server
+      dispatch({
+        type: actions.LOGIN,
+        payload: { email },
+      });
+    } else {
+      // get the user information from the endpoint
+      try {
+        const { data } = await axios.get('http://localhost:8080/user', {
+          withCredentials: true,
+        });
+
+        // Persist in localstorage
+        localStorage.setItem('email', data.Email);
+        // dispatch initial authenticatd state
+        dispatch({
+          type: actions.LOGIN,
+          payload: { email: data.Email },
+        });
+      } catch (e) {
+        // eslint-disable-next-line no-console
+        console.log('Error getting data.');
+      }
     }
+
+    // stop loading
+    setIsLoading(false);
+  };
+
+  // Set auth state on render
+  useEffect(() => {
+    initiateAuthState();
   }, []);
 
-  useEffect(() => {
-    console.log('my current auth state: ', authState);
-    getUser();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [getUser]);
-
-  const value = useMemo(() => {
+  const providerValue = useMemo(() => {
     return {
       ...authState,
       isLoading,
     };
   }, [authState, isLoading]);
 
-  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
+  return (
+    <AuthContext.Provider value={providerValue}>
+      {children}
+    </AuthContext.Provider>
+  );
 }
