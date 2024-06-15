@@ -18,7 +18,7 @@ export function SocketProvider({ children }: ChildrenType) {
   const [webSocket, setWebsocket] = useState<WebSocket | null>(null);
   const [messages, setMessages] = useState<string[]>([]);
   useEffect(() => {
-    const ws = new WebSocket(`ws://localhost:8080/room?token=mytoken`);
+    const ws = new WebSocket(`ws://localhost:8080/linkup`);
 
     ws.onopen = () => {
       console.log('Web Socket connection opened.');
