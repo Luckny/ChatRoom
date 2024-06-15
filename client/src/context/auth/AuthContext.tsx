@@ -1,4 +1,4 @@
-import axios, { AxiosResponse } from 'axios';
+import axios from 'axios';
 import {
   createContext,
   useCallback,
@@ -52,7 +52,7 @@ export function AuthProvider({ children }: any /* TODO: type  */) {
   const [authState, dispatch] = useReducer(authReducer, initialAuth);
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
-  const initiateAuthState = async () => {
+  const initiateAuthState = useCallback(async () => {
     const email = localStorage.getItem('email');
 
     if (email) {
@@ -83,12 +83,12 @@ export function AuthProvider({ children }: any /* TODO: type  */) {
 
     // stop loading
     setIsLoading(false);
-  };
+  }, []);
 
   // Set auth state on render
   useEffect(() => {
     initiateAuthState();
-  }, []);
+  }, [initiateAuthState]);
 
   const providerValue = useMemo(() => {
     return {
