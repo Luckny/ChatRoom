@@ -9,11 +9,11 @@ import {
 } from '@mui/material';
 import SendIcon from '@mui/icons-material/Send';
 import { ChangeEvent, SyntheticEvent, useState } from 'react';
-import useSocketContext from '../../context/websocket/useSocketContext';
+import useSocket from '../../hooks/socket';
 
 export default function MessageBox() {
   const [message, setMessage] = useState<string>('');
-  const { messages, sendMessage } = useSocketContext();
+  const { messages, sendMessage } = useSocket();
   const handleSubmit = (event: SyntheticEvent) => {
     event.preventDefault();
     sendMessage(message);
