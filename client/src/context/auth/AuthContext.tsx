@@ -7,6 +7,7 @@ import {
   useReducer,
   useState,
 } from 'react';
+import { ChildrenType } from '../../typing';
 
 // TODO: move to type file
 type AuthType = {
@@ -48,7 +49,7 @@ const authReducer = (
   }
 };
 
-export function AuthProvider({ children }: any /* TODO: type  */) {
+export function AuthProvider({ children }: ChildrenType) {
   const [authState, dispatch] = useReducer(authReducer, initialAuth);
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
