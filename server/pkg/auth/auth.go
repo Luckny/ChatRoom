@@ -16,7 +16,8 @@ type AuthService struct {
 }
 
 type User struct {
-	Email string
+	Email   string
+	Picture string
 }
 
 func NewAuthService(store sessions.Store) *AuthService {

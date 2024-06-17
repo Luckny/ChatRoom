@@ -39,7 +39,7 @@ func (h *Handler) HandleAuthCallback(w http.ResponseWriter, r *http.Request) {
 		tracer.Trace("Could not set user session ", err.Error())
 		return
 	}
-	tracer.Trace(user.Email)
+	tracer.Trace(user)
 	tracer.Trace("Completed user auth from callback")
 	http.Redirect(w, r, "http://localhost:5173", http.StatusFound)
 }
@@ -56,6 +56,6 @@ func (h *Handler) GetUser(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	user := &auth.User{Email: session.Email}
+	user := &auth.User{Email: session.Email, Picture: session.AvatarURL}
 	json.NewEncoder(w).Encode(user)
 }
