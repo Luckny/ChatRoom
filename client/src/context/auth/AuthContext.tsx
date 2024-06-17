@@ -7,18 +7,15 @@ import {
   useReducer,
   useState,
 } from 'react';
-import { ChildrenType } from '../../typing';
+import { AuthType, ChildrenType, User } from '../../typing';
 
-// TODO: move to type file
-type AuthType = {
-  email: string; // TODO: create user type
-  isAuthenticated: boolean;
-  error?: string;
+const unauthenticatedUser: User = {
+  email: '',
+  picture: '',
 };
-
 // unauthenticated user state
 const initialAuth: AuthType = {
-  email: '',
+  user: unauthenticatedUser,
   isAuthenticated: false,
   error: undefined,
 };
@@ -40,7 +37,10 @@ const authReducer = (
   switch (action.type) {
     case actions.LOGIN:
       return {
-        email: action.payload.email,
+        user: {
+          email: action.payload.user.email,
+          picture: action.payload.user.picture,
+        },
         isAuthenticated: true,
         error: undefined,
       };
@@ -54,13 +54,14 @@ export function AuthProvider({ children }: ChildrenType) {
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
   const initiateAuthState = useCallback(async () => {
-    const email = localStorage.getItem('email');
+    const user = localStorage.getItem('user');
 
-    if (email) {
+    if (user) {
+      console.log(JSON.parse(user));
       // no need to hit the server
       dispatch({
         type: actions.LOGIN,
-        payload: { email },
+        payload: { user: JSON.parse(user) },
       });
     } else {
       // get the user information from the endpoint
@@ -69,12 +70,16 @@ export function AuthProvider({ children }: ChildrenType) {
           withCredentials: true,
         });
 
+        const userData: User = {
+          email: data.Email,
+          picture: data.Picture,
+        };
         // Persist in localstorage
-        localStorage.setItem('email', data.Email);
+        localStorage.setItem('user', JSON.stringify(userData));
         // dispatch initial authenticatd state
         dispatch({
           type: actions.LOGIN,
-          payload: { email: data.Email },
+          payload: { user: userData },
         });
       } catch (e) {
         // eslint-disable-next-line no-console

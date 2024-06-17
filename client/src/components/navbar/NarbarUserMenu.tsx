@@ -6,10 +6,12 @@ import Avatar from '@mui/material/Avatar';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import { useState } from 'react';
+import { useAuth } from '../../hooks/auth';
 
 const settings = ['Logout'];
 export default function NavbarUserMenu() {
   const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
+  const { user } = useAuth();
   const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElUser(event.currentTarget);
   };
@@ -22,7 +24,7 @@ export default function NavbarUserMenu() {
       <Tooltip title="Open settings">
         <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
           {/* TODO: alt should be user name and src be user picture */}
-          <Avatar alt="Remy Sharp" src="/" />
+          <Avatar component="image" alt={user.email} src={user.picture} />
         </IconButton>
       </Tooltip>
       <Menu
