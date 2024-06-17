@@ -2,6 +2,7 @@ import ReactDOM from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
 import AppRoutes from './AppRoutes';
 import { AuthProvider } from './context/auth/AuthContext';
+import Layout from './components/Layout';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -9,10 +10,9 @@ const root = ReactDOM.createRoot(
 root.render(
   <AuthProvider>
     <BrowserRouter>
-      {/* TODO: implement layout */}
-      {/* <Layout> */}
-      <AppRoutes />
-      {/* </Layout> */}
+      <Layout>
+        <AppRoutes />
+      </Layout>
     </BrowserRouter>
   </AuthProvider>
 );
