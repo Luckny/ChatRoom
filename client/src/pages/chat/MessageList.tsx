@@ -11,10 +11,13 @@ export default function MessageList({ messages, chatId }: MessageListProps) {
     <List sx={{ height: '70vh', overflowY: 'auto' }}>
       {messages.map((msg) =>
         msg.id === chatId ? (
-          //
-          // Outgoing messages
-          //
-          <ListItem key={msg.id} sx={{ textAlign: 'right' }}>
+          /**
+           *  Outgoing messages
+           */
+          <ListItem
+            key={msg.when.getUTCMilliseconds()}
+            sx={{ textAlign: 'right' }}
+          >
             <Grid container>
               <Grid item xs={12}>
                 <ListItemText primary={msg.message} />
@@ -27,10 +30,10 @@ export default function MessageList({ messages, chatId }: MessageListProps) {
             </Grid>
           </ListItem>
         ) : (
-          //
-          // Incomming messages
-          //
-          <ListItem key={msg.id}>
+          /**
+           *  Incomming messages
+           */
+          <ListItem key={msg.when.getUTCMilliseconds()}>
             <Grid container>
               <Grid item xs={12}>
                 <ListItemText primary={msg.message} />
