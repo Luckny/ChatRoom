@@ -58,26 +58,6 @@ func (authService *AuthService) StoreUserSession(
 	return nil
 }
 
-// NOTE: Should probably refactor these into one function
-func (authService *AuthService) StoreChatIdSession(
-	w http.ResponseWriter,
-	r *http.Request,
-	id string,
-) error {
-	tracer.Trace("Storing chat session")
-	session, _ := gothic.Store.Get(r, ChatIdSessionName)
-	// Set some session values.
-	session.Values["id"] = id
-
-	err := session.Save(r, w)
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return err
-	}
-
-	return nil
-}
-
 func (AuthService *AuthService) GetUserSession(r *http.Request) (goth.User, error) {
 
 	session, err := gothic.Store.Get(r, UserSessionName)
