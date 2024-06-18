@@ -5,6 +5,7 @@ import (
 )
 
 var UserSessionName = "user_session"
+var ChatIdSessionName = "chat_id_session"
 
 // all keys are strings, parsing is done internally
 type SessionsOptions struct {

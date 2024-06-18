@@ -7,6 +7,7 @@ import (
 
 	"github.com/Luckny/LinkUp/config"
 	"github.com/Luckny/LinkUp/pkg/auth"
+	"github.com/Luckny/LinkUp/pkg/chat"
 	"github.com/Luckny/LinkUp/pkg/handler"
 	"github.com/go-chi/chi"
 )
@@ -23,14 +24,15 @@ func main() {
 	})
 
 	authService := auth.NewAuthService(sessionStore)
-	handler := handler.New(authService)
+	chatService := chat.NewChatService()
+	handler := handler.New(authService, chatService)
 	// link up room
-	room := newRoom()
+	// room := newRoom()
 	// our chi router
 	router := chi.NewRouter()
 
 	// web socket route
-	router.Handle("/linkup", auth.MustAuth(room, authService))
+	router.Handle("/linkup", auth.MustAuth(handler.HandleChatRoom, authService))
 
 	// auth routes
 	router.Get("/auth/{provider}", handler.HandleLogin)
@@ -38,7 +40,8 @@ func main() {
 	router.Get("/user", handler.GetUser)
 
 	// start the room
-	go room.run()
+	// go room.run()
+	go chatService.Run()
 
 	log.Println("Server listening on port", *addr)
 	err := http.ListenAndServe(*addr, router)

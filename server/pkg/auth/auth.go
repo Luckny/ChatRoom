@@ -58,6 +58,26 @@ func (authService *AuthService) StoreUserSession(
 	return nil
 }
 
+// NOTE: Should probably refactor these into one function
+func (authService *AuthService) StoreChatIdSession(
+	w http.ResponseWriter,
+	r *http.Request,
+	id string,
+) error {
+	tracer.Trace("Storing chat session")
+	session, _ := gothic.Store.Get(r, ChatIdSessionName)
+	// Set some session values.
+	session.Values["id"] = id
+
+	err := session.Save(r, w)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return err
+	}
+
+	return nil
+}
+
 func (AuthService *AuthService) GetUserSession(r *http.Request) (goth.User, error) {
 
 	session, err := gothic.Store.Get(r, UserSessionName)
@@ -75,7 +95,7 @@ func (AuthService *AuthService) GetUserSession(r *http.Request) (goth.User, erro
 
 }
 
-func MustAuth(next http.Handler, auth *AuthService) http.HandlerFunc {
+func MustAuth(next http.HandlerFunc, auth *AuthService) http.HandlerFunc {
 
 	return func(w http.ResponseWriter, r *http.Request) {
 		session, err := auth.GetUserSession(r)
@@ -87,7 +107,8 @@ func MustAuth(next http.Handler, auth *AuthService) http.HandlerFunc {
 		}
 
 		tracer.Trace("User is authenticated. user: ", session.Email)
-		next.ServeHTTP(w, r)
+		// next.ServeHTTP(w, r)
+		next(w, r)
 	}
 
 }

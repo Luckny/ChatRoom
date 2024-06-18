@@ -1,0 +1,35 @@
+package handler
+
+import (
+	"log"
+	"net/http"
+
+	"github.com/google/uuid"
+)
+
+// A room is now a handler
+func (r *room) ServeHTTP(w http.ResponseWriter, req *http.Request) {
+	// TODO: handle cross origin
+	upgrader.CheckOrigin = func(r *http.Request) bool { return true }
+
+	socket, err := upgrader.Upgrade(w, req, nil)
+
+	if err != nil {
+		log.Fatal("ServeHTTP: ", err)
+		return
+	}
+
+	client := &Client{
+		id:     uuid.New().String(),
+		socket: socket,
+		send:   make(chan *message, 256),
+		room:   r,
+	}
+
+	// add client to the room
+	r.join <- client
+
+	defer func() { r.leave <- client }()
+	go client.write()
+	client.read()
+}
