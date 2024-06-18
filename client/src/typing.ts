@@ -11,6 +11,13 @@ export type AuthType = {
   error?: string;
 };
 
+export type MessageType = {
+  id: string;
+  message: string;
+  when: Date;
+  type: 'handshake' | undefined;
+};
+
 export type ChildrenType = {
   children: ReactNode;
 };

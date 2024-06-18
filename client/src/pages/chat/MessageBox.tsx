@@ -1,73 +1,22 @@
-import {
-  Divider,
-  Fab,
-  Grid,
-  List,
-  ListItem,
-  ListItemText,
-  TextField,
-} from '@mui/material';
-import SendIcon from '@mui/icons-material/Send';
-import { ChangeEvent, SyntheticEvent, useState } from 'react';
+import { Divider, Grid } from '@mui/material';
+import { SyntheticEvent, useState } from 'react';
 import useSocket from '../../hooks/socket';
+import MessageList from './MessageList';
+import MessageInput from './MessageInput';
 
 export default function MessageBox() {
   const [message, setMessage] = useState<string>('');
-  const { messages, sendMessage } = useSocket();
+
+  const { messages, sendMessage, chatId } = useSocket();
   const handleSubmit = (event: SyntheticEvent) => {
     event.preventDefault();
     sendMessage(message);
   };
   return (
     <Grid item xs={9}>
-      <List sx={{ height: '70vh', overflowY: 'auto' }}>
-        <ListItem key="1">
-          <Grid container>
-            <Grid item xs={12}>
-              <ListItemText primary={messages[0]} />
-            </Grid>
-            <Grid item xs={12}>
-              <ListItemText secondary="User1 @ 09:30" />
-            </Grid>
-          </Grid>
-        </ListItem>
-        <ListItem key="2">
-          <Grid container>
-            <Grid item xs={12}>
-              <ListItemText primary={messages[1]} />
-            </Grid>
-            <Grid item xs={12}>
-              <ListItemText secondary="User2 @ 09:31" />
-            </Grid>
-          </Grid>
-        </ListItem>
-        <ListItem key="3" sx={{ textAlign: 'right' }}>
-          <Grid container>
-            <Grid item xs={12}>
-              <ListItemText primary={messages[2]} />
-            </Grid>
-            <Grid item xs={12}>
-              <ListItemText secondary="me @ 10:30" />
-            </Grid>
-          </Grid>
-        </ListItem>
-      </List>
+      <MessageList messages={messages} chatId={chatId} />
       <Divider />
-      <Grid container style={{ padding: '20px' }}>
-        <Grid component="form" onSubmit={handleSubmit}>
-          <TextField
-            id="outlined-basic-email"
-            label="Type Something"
-            fullWidth
-            onChange={(event: ChangeEvent<HTMLInputElement>) =>
-              setMessage(event.target.value)
-            }
-          />
-          <Fab color="primary" size="small" aria-label="add" type="submit">
-            <SendIcon />
-          </Fab>
-        </Grid>
-      </Grid>
+      <MessageInput onSubmit={handleSubmit} addMessage={setMessage} />
     </Grid>
   );
 }

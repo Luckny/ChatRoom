@@ -5,18 +5,22 @@ import {
   useMemo,
   useState,
 } from 'react';
-import { ChildrenType } from '../../typing';
+import { ChildrenType, MessageType } from '../../typing';
 
 export type SocketType = {
-  messages: string[];
+  messages: MessageType[];
   sendMessage: (message: string) => void;
+  chatId: string;
 };
 
 export const SocketContext = createContext<SocketType | undefined>(undefined);
 
 export function SocketProvider({ children }: ChildrenType) {
+  // State
   const [webSocket, setWebsocket] = useState<WebSocket | null>(null);
-  const [messages, setMessages] = useState<string[]>([]);
+  const [messages, setMessages] = useState<MessageType[]>([]);
+  const [chatId, setChatId] = useState('');
+
   useEffect(() => {
     const ws = new WebSocket(`ws://localhost:8080/linkup`);
 
@@ -31,10 +35,26 @@ export function SocketProvider({ children }: ChildrenType) {
     setWebsocket(ws);
   }, []);
 
-  if (webSocket)
-    webSocket.onmessage = (message: MessageEvent) => {
-      setMessages([...messages, message.data]);
+  if (webSocket) {
+    webSocket.onmessage = (event: MessageEvent) => {
+      // create the message element
+      const data = JSON.parse(event.data);
+      const message: MessageType = {
+        id: data.Id,
+        message: data.Text,
+        when: new Date(data.When),
+        type: data.Type,
+      };
+
+      if (message.type === 'handshake') {
+        localStorage.setItem('chatId', message.id);
+        setChatId(message.id);
+      } else {
+        // add the message to the array
+        setMessages([...messages, message]);
+      }
     };
+  }
 
   /**
    * Send a message over the websocket connection.
@@ -42,8 +62,9 @@ export function SocketProvider({ children }: ChildrenType) {
    */
   const sendMessage = useCallback(
     (message: string) => {
+      const data = { Text: message };
       if (webSocket) {
-        webSocket.send(message);
+        webSocket.send(JSON.stringify(data));
       }
     },
     [webSocket]
@@ -53,8 +74,9 @@ export function SocketProvider({ children }: ChildrenType) {
     return {
       messages,
       sendMessage,
+      chatId,
     };
-  }, [messages, sendMessage]);
+  }, [messages, sendMessage, chatId]);
 
   return (
     // eslint-disable-next-line react/jsx-no-constructed-context-values
