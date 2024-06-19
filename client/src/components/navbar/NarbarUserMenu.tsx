@@ -6,7 +6,6 @@ import Avatar from '@mui/material/Avatar';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import { useState } from 'react';
-import axios from 'axios';
 import { useAuth } from '../../hooks/auth';
 import { LinkType } from '../../typing';
 import useLogout from '../../hooks/logout';
