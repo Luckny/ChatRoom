@@ -4,7 +4,7 @@ import { Box, IconButton, MenuItem, Typography, Menu } from '@mui/material';
 import { NavbarPropsType } from '../../typing';
 
 export default function HamburgerMenu({
-  pages,
+  links,
   handleMenuItemClick,
 }: NavbarPropsType) {
   const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
@@ -48,14 +48,14 @@ export default function HamburgerMenu({
           display: { xs: 'block', md: 'none' },
         }}
       >
-        {pages.map((page) => (
+        {links.map((link) => (
           <MenuItem
-            key={page.name}
+            key={link.name}
             onClick={() => {
-              handleMenuItemClick(page);
+              handleMenuItemClick(link);
             }}
           >
-            <Typography textAlign="center">{page.name}</Typography>
+            <Typography textAlign="center">{link.name}</Typography>
           </MenuItem>
         ))}
       </Menu>

@@ -1,4 +1,4 @@
-import { ReactNode } from 'react';
+import { Dispatch, ReactNode } from 'react';
 
 export type User = {
   email: string;
@@ -9,6 +9,16 @@ export type AuthType = {
   user: User;
   isAuthenticated: boolean;
   error?: string;
+};
+
+export type AuthActionType = {
+  type: string;
+  payload: AuthType;
+};
+
+export type AuthContextType = AuthType & {
+  isLoading: boolean;
+  dispatch: Dispatch<AuthActionType>;
 };
 
 export type MessageType = {
@@ -22,12 +32,16 @@ export type ChildrenType = {
   children: ReactNode;
 };
 
-export type PageType = {
+export type LinkType = {
   name: string;
   ref: string;
 };
 
+export type Links = {
+  [key: string]: LinkType[];
+};
+
 export type NavbarPropsType = {
-  pages: PageType[];
+  links: LinkType[];
   handleMenuItemClick: (page: any) => void;
 };

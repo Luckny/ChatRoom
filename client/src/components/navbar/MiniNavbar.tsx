@@ -5,13 +5,13 @@ import HamburgerMenu from './HamburgerMenu';
 import { NavbarPropsType } from '../../typing';
 
 export default function MiniNavBar({
-  pages,
+  links,
   handleMenuItemClick,
 }: NavbarPropsType) {
   const navigate = useNavigate();
   return (
     <>
-      <HamburgerMenu pages={pages} handleMenuItemClick={handleMenuItemClick} />
+      <HamburgerMenu links={links} handleMenuItemClick={handleMenuItemClick} />
       <QuickreplyIcon sx={{ display: { xs: 'flex', md: 'none' }, mr: 1 }} />
       <Typography
         variant="h5"

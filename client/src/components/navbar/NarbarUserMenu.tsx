@@ -6,12 +6,15 @@ import Avatar from '@mui/material/Avatar';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import { useState } from 'react';
+import axios from 'axios';
 import { useAuth } from '../../hooks/auth';
+import { LinkType } from '../../typing';
+import useLogout from '../../hooks/logout';
 
-const settings = ['Logout'];
-export default function NavbarUserMenu() {
+export default function NavbarUserMenu({ links }: { links: LinkType[] }) {
   const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
   const { user } = useAuth();
+  const { logout } = useLogout();
   const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElUser(event.currentTarget);
   };
@@ -19,6 +22,19 @@ export default function NavbarUserMenu() {
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
   };
+  const handleMenuItemClick = async (link: LinkType) => {
+    switch (link.name) {
+      case 'Logout':
+        logout();
+        break;
+      default:
+        // eslint-disable-next-line no-console
+        console.log('no other settings for now.');
+    }
+
+    handleCloseUserMenu();
+  };
+
   return (
     <Box sx={{ flexGrow: 0 }}>
       <Tooltip title="Open settings">
@@ -43,10 +59,14 @@ export default function NavbarUserMenu() {
         open={Boolean(anchorElUser)}
         onClose={handleCloseUserMenu}
       >
-        {settings.map((setting) => (
-          // TODO: handle logout
-          <MenuItem key={setting} onClick={handleCloseUserMenu}>
-            <Typography textAlign="center">{setting}</Typography>
+        {links.map((link) => (
+          <MenuItem
+            key={link.name}
+            onClick={() => {
+              handleMenuItemClick(link);
+            }}
+          >
+            <Typography textAlign="center">{link.name}</Typography>
           </MenuItem>
         ))}
       </Menu>

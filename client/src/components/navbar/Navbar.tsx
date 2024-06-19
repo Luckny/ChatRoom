@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import { NavbarPropsType } from '../../typing';
 
 export default function Navbar({
-  pages,
+  links,
   handleMenuItemClick,
 }: NavbarPropsType) {
   const navigate = useNavigate();
@@ -31,15 +31,15 @@ export default function Navbar({
         LINKUP
       </Typography>
       <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-        {pages.map((page) => (
+        {links.map((link) => (
           <Button
-            key={page.name}
+            key={link.name}
             onClick={() => {
-              handleMenuItemClick(page);
+              handleMenuItemClick(link);
             }}
             sx={{ my: 2, color: 'white', display: 'block' }}
           >
-            {page.name}
+            {link.name}
           </Button>
         ))}
       </Box>

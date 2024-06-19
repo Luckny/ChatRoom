@@ -5,29 +5,45 @@ import { useNavigate } from 'react-router-dom';
 import MiniNavbar from './MiniNavbar';
 import Navbar from './Navbar';
 import NavbarUserMenu from './NarbarUserMenu';
-import { PageType } from '../../typing';
+import { LinkType, Links } from '../../typing';
 
-const pages: PageType[] = [
-  {
-    name: 'Chat',
-    ref: '/chat',
-  },
-];
+const links: Links = {
+  navLinks: [
+    {
+      name: 'Chat',
+      ref: '/chat',
+    },
+  ],
+
+  userLinks: [
+    {
+      name: 'Logout',
+      // TODO: dynamic providers
+      ref: 'http://localhost:8080/logout/google',
+    },
+  ],
+};
 
 export default function ApplicationBar() {
   const navigate = useNavigate();
 
-  const handleMenuItemClick = (page: PageType) => {
-    navigate(page.ref);
+  const handleMenuItemClick = (link: LinkType) => {
+    navigate(link.ref);
   };
 
   return (
     <AppBar position="static">
       <Container maxWidth="xl">
         <Toolbar disableGutters>
-          <MiniNavbar pages={pages} handleMenuItemClick={handleMenuItemClick} />
-          <Navbar pages={pages} handleMenuItemClick={handleMenuItemClick} />
-          <NavbarUserMenu />
+          <MiniNavbar
+            links={links.navLinks}
+            handleMenuItemClick={handleMenuItemClick}
+          />
+          <Navbar
+            links={links.navLinks}
+            handleMenuItemClick={handleMenuItemClick}
+          />
+          <NavbarUserMenu links={links.userLinks} />
         </Toolbar>
       </Container>
     </AppBar>
