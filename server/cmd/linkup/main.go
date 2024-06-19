@@ -37,6 +37,7 @@ func main() {
 	// auth routes
 	router.Get("/auth/{provider}", handler.HandleLogin)
 	router.Get("/auth/{provider}/callback", handler.HandleAuthCallback)
+	router.Get("/logout/{provider}", handler.HandleLogout)
 	router.Get("/user", handler.GetUser)
 
 	// start the room

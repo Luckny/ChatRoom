@@ -58,6 +58,23 @@ func (authService *AuthService) StoreUserSession(
 	return nil
 }
 
+func (authService *AuthService) ClearUserSession(w http.ResponseWriter, r *http.Request) error {
+
+	tracer.Trace("Clearing user session")
+	session, _ := gothic.Store.Get(r, UserSessionName)
+	session.Values["user"] = nil
+	session.Options.MaxAge = -1
+
+	err := session.Save(r, w)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return err
+	}
+
+	return nil
+
+}
+
 func (AuthService *AuthService) GetUserSession(r *http.Request) (goth.User, error) {
 
 	session, err := gothic.Store.Get(r, UserSessionName)
