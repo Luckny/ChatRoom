@@ -87,9 +87,12 @@ export function AuthProvider({ children }: ChildrenType) {
             error: undefined,
           },
         });
-      } catch (e) {
-        // eslint-disable-next-line no-console
-        console.log('Error getting user data.');
+      } catch (e: any) {
+        // if user is not authenticated
+        if (e.response.status !== 401) {
+          // eslint-disable-next-line no-console
+          console.log('Error getting user data.');
+        }
       }
     }
 
