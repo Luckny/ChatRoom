@@ -26,22 +26,18 @@ func main() {
 	authService := auth.NewAuthService(sessionStore)
 	chatService := chat.NewChatService()
 	handler := handler.New(authService, chatService)
-	// link up room
-	// room := newRoom()
-	// our chi router
 	router := chi.NewRouter()
 
-	// web socket route
-	router.Handle("/linkup", auth.MustAuth(handler.HandleChatRoom, authService))
-
-	// auth routes
+	// Authenticate user
 	router.Get("/auth/{provider}", handler.HandleLogin)
 	router.Get("/auth/{provider}/callback", handler.HandleAuthCallback)
-	router.Get("/logout/{provider}", handler.HandleLogout)
-	router.Get("/user", handler.GetUser)
+
+	// Authentification required
+	router.Get("/user", auth.MustAuth(handler.GetUser, authService))
+	router.Handle("/linkup", auth.MustAuth(handler.HandleChatRoom, authService))
+	router.Get("/logout/{provider}", auth.MustAuth(handler.HandleLogout, authService))
 
 	// start the room
-	// go room.run()
 	go chatService.Run()
 
 	log.Println("Server listening on port", *addr)
