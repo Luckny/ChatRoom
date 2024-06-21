@@ -28,14 +28,16 @@ func main() {
 	handler := handler.New(authService, chatService)
 	router := chi.NewRouter()
 
+	withCors := handler.WithCors
+
 	// Authenticate user
 	router.Get("/auth/{provider}", handler.HandleLogin)
 	router.Get("/auth/{provider}/callback", handler.HandleAuthCallback)
 
 	// Authentification required
-	router.Get("/user", auth.MustAuth(handler.GetUser, authService))
-	router.Handle("/linkup", auth.MustAuth(handler.HandleChatRoom, authService))
-	router.Get("/logout/{provider}", auth.MustAuth(handler.HandleLogout, authService))
+	router.Get("/user", withCors(auth.MustAuth(handler.GetUser, authService)))
+	router.Handle("/linkup", withCors(auth.MustAuth(handler.HandleChatRoom, authService)))
+	router.Get("/logout/{provider}", withCors(auth.MustAuth(handler.HandleLogout, authService)))
 
 	// start the room
 	go chatService.Run()

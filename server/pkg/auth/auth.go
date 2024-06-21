@@ -95,10 +95,6 @@ func (AuthService *AuthService) GetUserSession(r *http.Request) (goth.User, erro
 func MustAuth(next http.HandlerFunc, auth *AuthService) http.HandlerFunc {
 
 	return func(w http.ResponseWriter, r *http.Request) {
-		w.Header().Set("Access-Control-Allow-Origin", "http://localhost:5173")
-		w.Header().Set("Access-Control-Allow-Credentials", "true")
-		w.Header().Set("Content-Type", "application/json")
-
 		_, err := auth.GetUserSession(r)
 		if err != nil {
 			tracer.Trace("Unauthenticated request to protected endpoint.")
