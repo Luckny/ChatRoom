@@ -1,7 +1,10 @@
+import { Box, Grid } from '@mui/material';
+import Hero from './Hero';
+
 export default function Home() {
   return (
-    <div>
-      <h1>Home Page</h1>
-    </div>
+    <Grid container>
+      <Hero />
+    </Grid>
   );
 }
