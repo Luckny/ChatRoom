@@ -6,14 +6,17 @@ import Avatar from '@mui/material/Avatar';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../hooks/auth';
 import { LinkType } from '../../typing';
 import useLogout from '../../hooks/logout';
 
 export default function NavbarUserMenu({ links }: { links: LinkType[] }) {
   const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
-  const { user } = useAuth();
+  const { user, isAuthenticated } = useAuth();
   const { logout } = useLogout();
+
+  const navigate = useNavigate();
   const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElUser(event.currentTarget);
   };
@@ -34,7 +37,7 @@ export default function NavbarUserMenu({ links }: { links: LinkType[] }) {
     handleCloseUserMenu();
   };
 
-  return (
+  return isAuthenticated ? (
     <Box sx={{ flexGrow: 0 }}>
       <Tooltip title="Open settings">
         <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
@@ -69,5 +72,22 @@ export default function NavbarUserMenu({ links }: { links: LinkType[] }) {
         ))}
       </Menu>
     </Box>
+  ) : (
+    <Typography
+      noWrap
+      sx={{
+        mr: 2,
+        display: { xs: 'none', md: 'flex' },
+        fontFamily: 'monospace',
+        fontWeight: 700,
+        // letterSpacing: '.3rem',
+        color: 'inherit',
+        textDecoration: 'none',
+        cursor: 'pointer',
+      }}
+      onClick={() => navigate('/login')}
+    >
+      Sign in
+    </Typography>
   );
 }
