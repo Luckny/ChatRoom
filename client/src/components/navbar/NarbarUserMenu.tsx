@@ -41,7 +41,7 @@ export default function NavbarUserMenu({ links }: { links: LinkType[] }) {
     <Box sx={{ flexGrow: 0 }}>
       <Tooltip title="Open settings">
         <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-          <Avatar component="image" alt={user.email} src={user.picture} />
+          <Avatar alt={user.email} src={user.picture} />
         </IconButton>
       </Tooltip>
       <Menu
