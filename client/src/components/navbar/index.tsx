@@ -10,17 +10,29 @@ import { LinkType, Links } from '../../typing';
 const links: Links = {
   navLinks: [
     {
-      name: 'Chat',
-      ref: '/chat',
+      name: 'Features',
+      ref: '/',
     },
+    {
+      name: 'How It Works',
+      ref: '/',
+    },
+    {
+      name: 'Testimonials',
+      ref: '/',
+    },
+    // {
+    //   name: 'Chat',
+    //   ref: '/chat',
+    // },
   ],
 
   userLinks: [
-    {
-      name: 'Logout',
-      // TODO: dynamic providers
-      ref: 'http://localhost:8080/logout/google',
-    },
+    // {
+    //   name: 'Logout',
+    //   // TODO: dynamic providers
+    //   ref: 'http://localhost:8080/logout/google',
+    // },
   ],
 };
 
@@ -32,7 +44,7 @@ export default function ApplicationBar() {
   };
 
   return (
-    <AppBar position="static">
+    <AppBar color="inherit" position="static">
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           <MiniNavbar

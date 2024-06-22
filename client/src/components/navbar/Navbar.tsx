@@ -21,7 +21,7 @@ export default function Navbar({
           display: { xs: 'none', md: 'flex' },
           fontFamily: 'monospace',
           fontWeight: 700,
-          letterSpacing: '.3rem',
+          letterSpacing: '.1rem',
           color: 'inherit',
           textDecoration: 'none',
           cursor: 'pointer',
@@ -30,14 +30,21 @@ export default function Navbar({
       >
         LINKUP
       </Typography>
-      <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
+      <Box
+        sx={{
+          flexGrow: 1,
+          display: { xs: 'none', md: 'flex' },
+          justifyContent: 'flex-end',
+        }}
+      >
         {links.map((link) => (
           <Button
+            color="inherit"
             key={link.name}
             onClick={() => {
               handleMenuItemClick(link);
             }}
-            sx={{ my: 2, color: 'white', display: 'block' }}
+            sx={{ my: 2, display: 'block' }}
           >
             {link.name}
           </Button>

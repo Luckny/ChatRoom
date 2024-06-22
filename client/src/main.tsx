@@ -1,5 +1,7 @@
 import ReactDOM from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
+import './index.css';
+import { StyledEngineProvider } from '@mui/material';
 import AppRoutes from './AppRoutes';
 import { AuthProvider } from './context/auth/AuthContext';
 import Layout from './components/Layout';
@@ -10,9 +12,11 @@ const root = ReactDOM.createRoot(
 root.render(
   <AuthProvider>
     <BrowserRouter>
-      <Layout>
-        <AppRoutes />
-      </Layout>
+      <StyledEngineProvider injectFirst>
+        <Layout>
+          <AppRoutes />
+        </Layout>
+      </StyledEngineProvider>
     </BrowserRouter>
   </AuthProvider>
 );

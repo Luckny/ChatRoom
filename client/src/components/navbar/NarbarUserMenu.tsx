@@ -7,6 +7,7 @@ import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { Button } from '@mui/material';
 import { useAuth } from '../../hooks/auth';
 import { LinkType } from '../../typing';
 import useLogout from '../../hooks/logout';
@@ -73,21 +74,19 @@ export default function NavbarUserMenu({ links }: { links: LinkType[] }) {
       </Menu>
     </Box>
   ) : (
-    <Typography
-      noWrap
-      sx={{
-        mr: 2,
-        display: { xs: 'none', md: 'flex' },
-        fontFamily: 'monospace',
-        fontWeight: 700,
-        // letterSpacing: '.3rem',
-        color: 'inherit',
-        textDecoration: 'none',
-        cursor: 'pointer',
-      }}
-      onClick={() => navigate('/login')}
-    >
-      Sign in
-    </Typography>
+    <>
+      <Button
+        color="inherit"
+        className="bg-gray-100 hover:bg-gray-200 font-medium rounded-full text-sm px-5 py-2.5 ml-2"
+      >
+        Join Now
+      </Button>
+      <Button
+        color="inherit"
+        className="bg-gray-100 hover:bg-gray-200 font-medium rounded-full text-sm px-5 py-2.5 ml-2"
+      >
+        Sign In
+      </Button>
+    </>
   );
 }
