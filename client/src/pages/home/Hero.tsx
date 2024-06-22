@@ -50,8 +50,8 @@ export default function Hero() {
           color: 'inherit',
         }}
       >
-        Create your space, invite friends, and explore communities - all with
-        privacy and freedom.
+        Create your space, invite friends, let in strangers, and have some fun -
+        all with privacy and freedom.
       </Typography>
       <Button
         color="inherit"
