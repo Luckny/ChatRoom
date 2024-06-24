@@ -24,8 +24,8 @@ func main() {
 	})
 
 	authService := auth.NewAuthService(sessionStore)
-	chatService := chat.NewChatService()
-	handler := handler.New(authService, chatService)
+	chatRoom := chat.NewChatRoom()
+	handler := handler.New(authService, chatRoom)
 	router := chi.NewRouter()
 
 	withCors := handler.WithCors
@@ -40,7 +40,7 @@ func main() {
 	router.Get("/logout/{provider}", withCors(auth.MustAuth(handler.HandleLogout, authService)))
 
 	// start the room
-	go chatService.Run()
+	go chatRoom.Run()
 
 	log.Println("Server listening on port", *addr)
 	err := http.ListenAndServe(*addr, router)

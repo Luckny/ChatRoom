@@ -17,7 +17,7 @@ type Client struct {
 	Send chan *Message
 
 	// Client's current room
-	ChatRoom *ChatService
+	ChatRoom *ChatRoom
 }
 
 // Read messages from the message queue channel

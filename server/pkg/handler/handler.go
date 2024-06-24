@@ -9,10 +9,10 @@ import (
 
 type Handler struct {
 	auth *auth.AuthService
-	chat *chat.ChatService
+	chat *chat.ChatRoom
 }
 
-func New(auth *auth.AuthService, chat *chat.ChatService) *Handler {
+func New(auth *auth.AuthService, chat *chat.ChatRoom) *Handler {
 	return &Handler{auth: auth, chat: chat}
 }
 

@@ -4,7 +4,7 @@ import (
 	"github.com/Luckny/LinkUp/pkg/tracer"
 )
 
-type ChatService struct {
+type ChatRoom struct {
 	// Channel that holds incomming messages for the room
 	MsgQueue chan *Message
 
@@ -18,8 +18,8 @@ type ChatService struct {
 	Clients map[*Client]bool
 }
 
-func NewChatService() *ChatService {
-	return &ChatService{
+func NewChatRoom() *ChatRoom {
+	return &ChatRoom{
 		MsgQueue: make(chan *Message),
 		Join:     make(chan *Client),
 		Leave:    make(chan *Client),
@@ -27,25 +27,25 @@ func NewChatService() *ChatService {
 	}
 }
 
-func (chatService *ChatService) Run() {
+func (chatRoom *ChatRoom) Run() {
 	for {
 		select {
-		case client := <-chatService.Join:
+		case client := <-chatRoom.Join:
 			// client joining the room
-			chatService.Clients[client] = true
+			chatRoom.Clients[client] = true
 			tracer.Trace("New client joined. ", client.Id)
 
-		case client := <-chatService.Leave:
+		case client := <-chatRoom.Leave:
 			// client leaving the room
-			delete(chatService.Clients, client)
+			delete(chatRoom.Clients, client)
 			// close the client's sending channel
 			close(client.Send)
 			tracer.Trace("Client left.")
 
 		// message in the msg in the queue
-		case msg := <-chatService.MsgQueue:
+		case msg := <-chatRoom.MsgQueue:
 			// broadcast message to all clients
-			for client := range chatService.Clients {
+			for client := range chatRoom.Clients {
 				if msg.Type == "handshake" && msg.Id != client.Id {
 					continue
 				}
@@ -55,7 +55,7 @@ func (chatService *ChatService) Run() {
 					tracer.Trace(" -- Message sent to client ", client.Id)
 				default:
 					// failed to send
-					delete(chatService.Clients, client)
+					delete(chatRoom.Clients, client)
 					close(client.Send)
 					tracer.Trace(" -- Failed to send message, closing client")
 				}
