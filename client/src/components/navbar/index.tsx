@@ -11,19 +11,19 @@ const links: Links = {
   navLinks: [
     {
       name: 'Features',
-      ref: '/',
+      href: '/',
     },
     {
       name: 'How It Works',
-      ref: '/',
+      href: '/',
     },
     {
       name: 'Testimonials',
-      ref: '/',
+      href: '/',
     },
     // {
     //   name: 'Chat',
-    //   ref: '/chat',
+    //   href: '/chat',
     // },
   ],
 
@@ -31,7 +31,7 @@ const links: Links = {
     // {
     //   name: 'Logout',
     //   // TODO: dynamic providers
-    //   ref: 'http://localhost:8080/logout/google',
+    //   href: 'http://localhost:8080/logout/google',
     // },
   ],
 };
@@ -40,7 +40,7 @@ export default function ApplicationBar() {
   const navigate = useNavigate();
 
   const handleMenuItemClick = (link: LinkType) => {
-    navigate(link.ref);
+    navigate(link.href);
   };
 
   return (

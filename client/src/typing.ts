@@ -34,7 +34,7 @@ export type ChildrenType = {
 
 export type LinkType = {
   name: string;
-  ref: string;
+  href: string;
 };
 
 export type Links = {

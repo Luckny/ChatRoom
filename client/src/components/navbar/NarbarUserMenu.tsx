@@ -84,6 +84,7 @@ export default function NavbarUserMenu({ links }: { links: LinkType[] }) {
       <Button
         color="inherit"
         className="bg-gray-100 hover:bg-gray-200 font-medium rounded-full text-sm px-5 py-2.5 ml-2"
+        onClick={() => navigate('/login')}
       >
         Sign In
       </Button>

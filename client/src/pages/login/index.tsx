@@ -1,68 +1,62 @@
-import { Avatar, Button, Grid, Paper, Typography } from '@mui/material';
+import { Avatar, Divider, Grid, Paper, Typography } from '@mui/material';
 
 import { LockOutlined } from '@mui/icons-material';
+import SocialLogin from './SocialLogin';
 
 export default function Login() {
-  // const handleClick = () => {
-  //   try {
-  //     axios.get('http://localhost:8080/auth/google');
-  //   } catch (e) {
-  //     // eslint-disable-next-line no-console
-  //     console.log('Error with sign in');
-  //   }
-  // };
-
   return (
     <Grid
       container
       direction="column"
       alignItems="center"
       justifyContent="center"
-      sx={{ minHeight: '100vh' }}
+      sx={{ minHeight: '60vh' }}
       maxWidth="xs"
     >
-      <Paper elevation={3} sx={{ padding: 3, display: 'flex' }}>
-        <Grid
+      <Paper
+        elevation={2}
+        sx={{
+          padding: 3,
+          width: '30%',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          flexDirection: 'column',
+        }}
+      >
+        <Avatar>
+          <LockOutlined />
+        </Avatar>
+        <Typography
+          variant="h5"
+          noWrap
           sx={{
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
+            //   display: { xs: 'flex', md: 'none' },
+            textAlign: 'center',
+            // fontFamily: 'monospace',
+            fontWeight: 700,
+            letterSpacing: '.1rem',
+            color: 'inherit',
           }}
         >
-          <Avatar>
-            <LockOutlined />
-          </Avatar>
-          <Typography component="h2">
-            Select teh service you would like to sign in with
-          </Typography>
-          <Button
-            type="submit"
-            fullWidth
-            variant="contained"
-            sx={{ mt: 3, mb: 1 }}
-            href="http://localhost:8080/auth/google"
-          >
-            Sign in with Google
-          </Button>
-          {/* <Button */}
-          {/*   // disabled={isLoading} */}
-          {/*   type="submit" */}
-          {/*   fullWidth */}
-          {/*   variant="contained" */}
-          {/*   sx={{ mb: 1 }} */}
-          {/* > */}
-          {/*   Sign in with Facebook */}
-          {/* </Button> */}
-          {/* <Button */}
-          {/*   // disabled={isLoading} */}
-          {/*   type="submit" */}
-          {/*   fullWidth */}
-          {/*   variant="contained" */}
-          {/*   sx={{ mb: 1 }} */}
-          {/* > */}
-          {/*   Sign in with GitHub */}
-          {/* </Button> */}
-        </Grid>
+          Sign in to LinkUp
+        </Typography>
+
+        <SocialLogin />
+
+        <Divider sx={{ width: '100%', bgcolor: 'black', marginY: 2 }} />
+        {/* <CredentialsLogin /> */}
+        {/* <Typography */}
+        {/*   variant="body1" */}
+        {/*   noWrap */}
+        {/*   sx={{ */}
+        {/*     textAlign: 'center', */}
+        {/*     color: 'inherit', */}
+        {/*   }} */}
+        {/* > */}
+        {/*   {`Don't have an account? `} */}
+        {/*   <a href="/">Sign up</a> */}
+        {/* </Typography> */}
       </Paper>
     </Grid>
   );
