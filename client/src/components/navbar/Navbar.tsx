@@ -34,21 +34,45 @@ export default function Navbar({
         sx={{
           flexGrow: 1,
           display: { xs: 'none', md: 'flex' },
+        }}
+      >
+        {links
+          .filter((link) => link.needsAuth)
+          .map((link) => (
+            <Button
+              color="inherit"
+              key={link.name}
+              onClick={() => {
+                handleMenuItemClick(link);
+              }}
+              sx={{ my: 2, display: 'block' }}
+            >
+              {link.name}
+            </Button>
+          ))}
+      </Box>
+
+      <Box
+        sx={{
+          flexGrow: 1,
+          display: { xs: 'none', md: 'flex' },
           justifyContent: 'flex-end',
         }}
       >
-        {links.map((link) => (
-          <Button
-            color="inherit"
-            key={link.name}
-            onClick={() => {
-              handleMenuItemClick(link);
-            }}
-            sx={{ my: 2, display: 'block' }}
-          >
-            {link.name}
-          </Button>
-        ))}
+        {links
+          .filter((link) => !link.needsAuth)
+          .map((link) => (
+            <Button
+              color="inherit"
+              key={link.name}
+              onClick={() => {
+                handleMenuItemClick(link);
+              }}
+              sx={{ my: 2, display: 'block' }}
+            >
+              {link.name}
+            </Button>
+          ))}
       </Box>
     </>
   );

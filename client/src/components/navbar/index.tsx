@@ -21,18 +21,19 @@ const links: Links = {
       name: 'Testimonials',
       href: '/',
     },
-    // {
-    //   name: 'Chat',
-    //   href: '/chat',
-    // },
+    {
+      name: 'Chat',
+      href: '/chat',
+      needsAuth: true,
+    },
   ],
 
   userLinks: [
-    // {
-    //   name: 'Logout',
-    //   // TODO: dynamic providers
-    //   href: 'http://localhost:8080/logout/google',
-    // },
+    {
+      name: 'Logout',
+      // TODO: dynamic providers
+      href: 'http://localhost:8080/logout/google',
+    },
   ],
 };
 

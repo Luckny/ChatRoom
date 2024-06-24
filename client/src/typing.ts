@@ -35,6 +35,7 @@ export type ChildrenType = {
 export type LinkType = {
   name: string;
   href: string;
+  needsAuth?: boolean;
 };
 
 export type Links = {
