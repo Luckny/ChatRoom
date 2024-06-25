@@ -7,7 +7,6 @@ import (
 
 	"github.com/Luckny/LinkUp/config"
 	"github.com/Luckny/LinkUp/pkg/auth"
-	"github.com/Luckny/LinkUp/pkg/chat"
 	"github.com/Luckny/LinkUp/pkg/handler"
 	"github.com/go-chi/chi"
 )
@@ -24,8 +23,9 @@ func main() {
 	})
 
 	authService := auth.NewAuthService(sessionStore)
-	chatRoom := chat.NewChatRoom()
-	handler := handler.New(authService, chatRoom)
+	// chatRoom := chat.NewChatRoom()
+	handler := handler.New(authService)
+	// handler.Add(chatRoom)
 	router := chi.NewRouter()
 
 	withCors := handler.WithCors
@@ -36,11 +36,14 @@ func main() {
 
 	// Authentification required
 	router.Get("/user", withCors(auth.MustAuth(handler.GetUser, authService)))
+	// TODO: change urls
+	router.Get("/test", withCors(auth.MustAuth(handler.ListRooms, authService)))
+	router.Post("/test", withCors(auth.MustAuth(handler.CreateChatRoom, authService)))
 	router.Handle("/linkup", withCors(auth.MustAuth(handler.HandleChatRoom, authService)))
 	router.Get("/logout/{provider}", withCors(auth.MustAuth(handler.HandleLogout, authService)))
 
 	// start the room
-	go chatRoom.Run()
+	// go chatRoom.Run()
 
 	log.Println("Server listening on port", *addr)
 	err := http.ListenAndServe(*addr, router)

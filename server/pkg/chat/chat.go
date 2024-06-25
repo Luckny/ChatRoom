@@ -2,9 +2,12 @@ package chat
 
 import (
 	"github.com/Luckny/LinkUp/pkg/tracer"
+	"github.com/google/uuid"
 )
 
 type ChatRoom struct {
+	Id   string
+	Name *string
 	// Channel that holds incomming messages for the room
 	MsgQueue chan *Message
 
@@ -20,6 +23,7 @@ type ChatRoom struct {
 
 func NewChatRoom() *ChatRoom {
 	return &ChatRoom{
+		Id:       uuid.New().String(),
 		MsgQueue: make(chan *Message),
 		Join:     make(chan *Client),
 		Leave:    make(chan *Client),

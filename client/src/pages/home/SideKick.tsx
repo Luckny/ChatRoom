@@ -1,7 +1,15 @@
 import { Box, Button, Grid, Paper, Typography } from '@mui/material';
+import axios from 'axios';
 import textingImg from '../../assets/imgs/texting.jpg';
 
 export default function SideKick() {
+  const handleCreateChatRoomClick = async () => {
+    axios('http://localhost:8080/test', {
+      method: 'post',
+      data: JSON.stringify({ Name: 'hahah' }),
+      withCredentials: true,
+    });
+  };
   return (
     <Box
       display="flex"
@@ -48,6 +56,7 @@ export default function SideKick() {
             <Button
               color="inherit"
               className="text-white bg-gray-900 hover:bg-gray-800 font-medium rounded-full text-sm px-5 py-2.5 ml-2 mt-5"
+              onClick={handleCreateChatRoomClick}
             >
               Create a Room Now
             </Button>

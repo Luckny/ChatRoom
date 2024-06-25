@@ -8,12 +8,16 @@ import (
 )
 
 type Handler struct {
-	auth *auth.AuthService
-	chat *chat.ChatRoom
+	auth  *auth.AuthService
+	rooms []*chat.ChatRoom
 }
 
-func New(auth *auth.AuthService, chat *chat.ChatRoom) *Handler {
-	return &Handler{auth: auth, chat: chat}
+func New(auth *auth.AuthService) *Handler {
+	return &Handler{auth: auth}
+}
+
+func (h *Handler) Add(room *chat.ChatRoom) {
+	h.rooms = append(h.rooms, room)
 }
 
 func (h *Handler) WithCors(next http.HandlerFunc) http.HandlerFunc {

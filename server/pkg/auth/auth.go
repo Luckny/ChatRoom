@@ -98,6 +98,7 @@ func MustAuth(next http.HandlerFunc, auth *AuthService) http.HandlerFunc {
 		_, err := auth.GetUserSession(r)
 		if err != nil {
 			tracer.Trace("Unauthenticated request to protected endpoint.")
+			tracer.Trace(err)
 			w.WriteHeader(http.StatusUnauthorized)
 			return
 		}
