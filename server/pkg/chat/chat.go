@@ -6,19 +6,20 @@ import (
 )
 
 type ChatRoom struct {
-	Id   string
-	Name *string
+	Id   string  `json:"id"`
+	Name *string `json:"name"`
+
 	// Channel that holds incomming messages for the room
-	MsgQueue chan *Message
+	MsgQueue chan *Message `json:"-"`
 
 	// channel for clients joining the room
-	Join chan *Client
+	Join chan *Client `json:"-"`
 
 	// chanell for clients leaving the room
-	Leave chan *Client
+	Leave chan *Client `json:"-"`
 
 	// Holds all active clients in this room
-	Clients map[*Client]bool
+	Clients map[*Client]bool `json:"-"`
 }
 
 func NewChatRoom() *ChatRoom {

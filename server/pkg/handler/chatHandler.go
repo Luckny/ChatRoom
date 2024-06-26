@@ -34,7 +34,10 @@ func (h *Handler) CreateChatRoom(w http.ResponseWriter, r *http.Request) {
 }
 
 func (h *Handler) ListRooms(w http.ResponseWriter, r *http.Request) {
-	tracer.Trace("Todo implement list rooms")
+	err := json.NewEncoder(w).Encode(h.rooms)
+	if err != nil {
+		tracer.Trace("error encoding json ", err)
+	}
 }
 
 // TODO: get room id from url instead of h.rooms[0]
