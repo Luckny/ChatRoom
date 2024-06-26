@@ -1,5 +1,5 @@
-import { Container, Grid, Paper, Typography } from '@mui/material';
-import { useEffect, useRef, useState } from 'react';
+import { Container, Grid, Paper } from '@mui/material';
+import { useEffect, useState } from 'react';
 import axios from 'axios';
 import MessageBox from './MessageBox';
 import RoomList from './RoomList';

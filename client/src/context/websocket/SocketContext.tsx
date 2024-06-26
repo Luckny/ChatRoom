@@ -11,6 +11,7 @@ export type SocketType = {
   messages: MessageType[];
   sendMessage: (message: string) => void;
   chatId: string;
+  setSocketUrl: (url: string) => void;
 };
 
 export const SocketContext = createContext<SocketType | undefined>(undefined);
@@ -20,20 +21,24 @@ export function SocketProvider({ children }: ChildrenType) {
   const [webSocket, setWebsocket] = useState<WebSocket | null>(null);
   const [messages, setMessages] = useState<MessageType[]>([]);
   const [chatId, setChatId] = useState('');
+  const [socketUrl, setSocketUrl] = useState('');
 
   useEffect(() => {
-    const ws = new WebSocket(`ws://localhost:8080/linkup`);
+    if (socketUrl) {
+      console.log('about to open');
+      const ws = new WebSocket(socketUrl);
 
-    ws.onopen = () => {
-      console.log('Web Socket connection opened.');
-    };
+      ws.onopen = () => {
+        console.log('Web Socket connection opened.');
+      };
 
-    ws.onclose = () => {
-      console.log('Web Socked connection closed.');
-    };
+      ws.onclose = () => {
+        console.log('Web Socked connection closed.');
+      };
 
-    setWebsocket(ws);
-  }, []);
+      setWebsocket(ws);
+    }
+  }, [socketUrl]);
 
   if (webSocket) {
     webSocket.onmessage = (event: MessageEvent) => {
@@ -75,8 +80,9 @@ export function SocketProvider({ children }: ChildrenType) {
       messages,
       sendMessage,
       chatId,
+      setSocketUrl,
     };
-  }, [messages, sendMessage, chatId]);
+  }, [messages, sendMessage, chatId, setSocketUrl]);
 
   return (
     // eslint-disable-next-line react/jsx-no-constructed-context-values

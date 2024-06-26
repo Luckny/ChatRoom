@@ -1,5 +1,6 @@
 import { Grid, List, ListItem, ListItemText, TextField } from '@mui/material';
 import { RoomType } from '../../typing';
+import useSocket from '../../hooks/socket';
 
 type RoomListProps = {
   rooms: RoomType[];
@@ -12,8 +13,10 @@ export default function RoomList({
   currentRoomId,
   setCurrentRoomId,
 }: RoomListProps) {
+  const { setSocketUrl } = useSocket();
   const handleSelectRoom = (room: RoomType) => {
     setCurrentRoomId(room.id);
+    setSocketUrl(`http://localhost:8080/room/${room.id}`);
   };
 
   return (
