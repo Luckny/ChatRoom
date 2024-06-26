@@ -4,9 +4,11 @@ import (
 	"encoding/json"
 	"log"
 	"net/http"
+	"slices"
 
 	"github.com/Luckny/LinkUp/pkg/chat"
 	"github.com/Luckny/LinkUp/pkg/tracer"
+	"github.com/go-chi/chi"
 	"github.com/google/uuid"
 	"github.com/gorilla/websocket"
 )
@@ -48,13 +50,17 @@ func (h *Handler) ListRooms(w http.ResponseWriter, r *http.Request) {
 
 // A room is now a handler
 func (h *Handler) HandleChatRoom(w http.ResponseWriter, req *http.Request) {
+	roomId := chi.URLParam(req, "id")
+	idx := slices.IndexFunc(h.rooms, func(room *chat.ChatRoom) bool { return room.Id == roomId })
+	room := h.rooms[idx]
+	go room.Run()
 	// TODO: handle cross origin
 	upgrader.CheckOrigin = func(r *http.Request) bool { return true }
 
 	socket, err := upgrader.Upgrade(w, req, nil)
 
 	if err != nil {
-		log.Fatal("ServeHTTP: ", err)
+		log.Fatal("Error upgrading socket connection: ", err)
 		return
 	}
 
@@ -64,12 +70,12 @@ func (h *Handler) HandleChatRoom(w http.ResponseWriter, req *http.Request) {
 		Id:       clientId.String(),
 		Socket:   socket,
 		Send:     make(chan *chat.Message, 256),
-		ChatRoom: h.rooms[0],
+		ChatRoom: room,
 	}
 	socket.WriteJSON(&chat.Message{Id: clientId.String(), Type: "handshake"})
 
 	// add client to the room
-	h.rooms[0].Join <- client
+	room.Join <- client
 
 	defer func() { h.rooms[0].Leave <- client }()
 	go client.Write()

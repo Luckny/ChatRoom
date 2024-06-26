@@ -39,7 +39,7 @@ func main() {
 	// TODO: change urls
 	router.Get("/rooms", withCors(auth.MustAuth(handler.ListRooms, authService)))
 	router.Post("/rooms", withCors(auth.MustAuth(handler.CreateChatRoom, authService)))
-	router.Handle("/linkup", withCors(auth.MustAuth(handler.HandleChatRoom, authService)))
+	router.Handle("/room/{id}", withCors(auth.MustAuth(handler.HandleChatRoom, authService)))
 	router.Get("/logout/{provider}", withCors(auth.MustAuth(handler.HandleLogout, authService)))
 
 	// start the room
