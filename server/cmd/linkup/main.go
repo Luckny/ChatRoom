@@ -37,8 +37,8 @@ func main() {
 	// Authentification required
 	router.Get("/user", withCors(auth.MustAuth(handler.GetUser, authService)))
 	// TODO: change urls
-	router.Get("/test", withCors(auth.MustAuth(handler.ListRooms, authService)))
-	router.Post("/test", withCors(auth.MustAuth(handler.CreateChatRoom, authService)))
+	router.Get("/rooms", withCors(auth.MustAuth(handler.ListRooms, authService)))
+	router.Post("/rooms", withCors(auth.MustAuth(handler.CreateChatRoom, authService)))
 	router.Handle("/linkup", withCors(auth.MustAuth(handler.HandleChatRoom, authService)))
 	router.Get("/logout/{provider}", withCors(auth.MustAuth(handler.HandleLogout, authService)))
 

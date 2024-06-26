@@ -17,12 +17,11 @@ export default function BasicModalDialog({ open, setOpen }: any) {
   const handleSubmit = async (event: any) => {
     event.preventDefault();
     try {
-      const res = await axios('http://localhost:8080/test', {
+      const res = await axios('http://localhost:8080/rooms', {
         method: 'post',
         data: JSON.stringify({ Name: roomName, Description: roomDescription }),
         withCredentials: true,
       });
-      console.log('no res');
       console.log(res);
       // eslint-disable-next-line no-console
       setOpen(false);
