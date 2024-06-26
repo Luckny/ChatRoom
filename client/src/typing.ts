@@ -46,3 +46,9 @@ export type NavbarPropsType = {
   links: LinkType[];
   handleMenuItemClick: (page: any) => void;
 };
+
+export type RoomType = {
+  id: string;
+  name: string;
+  description: string;
+};

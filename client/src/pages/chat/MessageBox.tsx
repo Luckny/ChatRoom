@@ -4,7 +4,7 @@ import useSocket from '../../hooks/socket';
 import MessageList from './MessageList';
 import MessageInput from './MessageInput';
 
-export default function MessageBox() {
+export default function MessageBox({ currentRoomId }: any) {
   const [message, setMessage] = useState<string>('');
 
   const { messages, sendMessage, chatId } = useSocket();
@@ -12,7 +12,9 @@ export default function MessageBox() {
     event.preventDefault();
     sendMessage(message);
   };
-  return (
+  return !currentRoomId ? (
+    <p>Select a room</p>
+  ) : (
     <Grid item xs={9}>
       <MessageList messages={messages} chatId={chatId} />
       <Divider />

@@ -1,26 +1,23 @@
-import {
-  Avatar,
-  Divider,
-  Grid,
-  List,
-  ListItem,
-  ListItemIcon,
-  ListItemText,
-  TextField,
-} from '@mui/material';
+import { Grid, List, ListItem, ListItemText, TextField } from '@mui/material';
+import { RoomType } from '../../typing';
 
-export default function RoomList() {
+type RoomListProps = {
+  rooms: RoomType[];
+  currentRoomId: string | null;
+  setCurrentRoomId: (roomId: string) => void;
+};
+
+export default function RoomList({
+  rooms,
+  currentRoomId,
+  setCurrentRoomId,
+}: RoomListProps) {
+  const handleSelectRoom = (room: RoomType) => {
+    setCurrentRoomId(room.id);
+  };
+
   return (
     <Grid item xs={3} sx={{ borderRight: '1px solid #e0e0e0' }}>
-      <List>
-        <ListItem key="Room 1">
-          <ListItemIcon>
-            <Avatar alt="Room 1" src="" />
-          </ListItemIcon>
-          <ListItemText primary="Room 1" />
-        </ListItem>
-      </List>
-      <Divider />
       <Grid item xs={12} style={{ padding: '10px' }}>
         <TextField
           id="outlined-basic-email"
@@ -29,21 +26,35 @@ export default function RoomList() {
           fullWidth
         />
       </Grid>
-      <Divider />
+      {/* <Divider /> */}
       <List>
-        <ListItem key="Room 2">
-          <ListItemIcon>
-            <Avatar alt="Room 2" src="" />
-          </ListItemIcon>
-          <ListItemText primary="Room 2" />
-        </ListItem>
-        <ListItem key="Room 3">
-          <ListItemIcon>
-            <Avatar alt="Room 3" src="" />
-          </ListItemIcon>
-          <ListItemText primary="Room 3" />
-        </ListItem>
+        {rooms.map((room) => (
+          <ListItem key={room.id}>
+            {/* <ListItemIcon> */}
+            {/*   <Avatar alt="Room 1" src="" /> */}
+            {/* </ListItemIcon> */}
+            <ListItemText
+              onClick={() => handleSelectRoom(room)}
+              primary={room.name}
+            />
+          </ListItem>
+        ))}
       </List>
+      {/* <Divider /> */}
+      {/* <List> */}
+      {/*   <ListItem key="Room 2"> */}
+      {/*     <ListItemIcon> */}
+      {/*       <Avatar alt="Room 2" src="" /> */}
+      {/*     </ListItemIcon> */}
+      {/*     <ListItemText primary="Room 2" /> */}
+      {/*   </ListItem> */}
+      {/*   <ListItem key="Room 3"> */}
+      {/*     <ListItemIcon> */}
+      {/*       <Avatar alt="Room 3" src="" /> */}
+      {/*     </ListItemIcon> */}
+      {/*     <ListItemText primary="Room 3" /> */}
+      {/*   </ListItem> */}
+      {/* </List> */}
     </Grid>
   );
 }
