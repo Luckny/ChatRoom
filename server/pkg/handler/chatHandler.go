@@ -27,10 +27,14 @@ func (h *Handler) CreateChatRoom(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		// TODO: handle error like this-> https://www.alexedwards.net/blog/how-to-properly-parse-a-json-request-body
 		tracer.Trace("Error decoding json ", err)
+		return
 	}
 
 	h.Add(chatRoom)
-	chatRoom.Run()
+	// TODO: run in due time only
+	// chatRoom.Run()
+	w.WriteHeader(http.StatusOK)
+
 }
 
 func (h *Handler) ListRooms(w http.ResponseWriter, r *http.Request) {

@@ -6,8 +6,9 @@ import (
 )
 
 type ChatRoom struct {
-	Id   string  `json:"id"`
-	Name *string `json:"name"`
+	Id          string  `json:"id"`
+	Name        *string `json:"name"`
+	Description *string `json:"description"`
 
 	// Channel that holds incomming messages for the room
 	MsgQueue chan *Message `json:"-"`
